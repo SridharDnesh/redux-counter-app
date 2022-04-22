@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      #increment,
+      #decrement {
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 8px;
+      }
+      span {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+    <title>Redux App</title>
+  </head>
+  <body>
+    <button id="increment">Increment</button>
+    <span>0</span>
+    <button id="decrement">Decrement</button>
+  </body>
+
+  <script>
+    const resultBox = document.querySelector("span");
+
+    const actionTypes = {
+      increment: "counter/incremented",
+      decrement: "counter/decremented",
+    };
+
+    const counterReducer = (state = { count: 0 }, action) => {
+      switch (action.type) {
+        case actionTypes.increment: {
+          return { count: state.count + 1 };
+        }
+        case actionTypes.decrement: {
+          return { count: state.count - 1 };
+        }
+        default:
+          return state;
+      }
+    };
+
+    const store = Redux.createStore(counterReducer);
+
+    store.subscribe(() => {
+      resultBox.innerText = store.getState().count;
+    });
+
+    const inc = document.querySelector("#increment");
+    const dec = document.querySelector("#decrement");
+
+    inc.addEventListener("click", function () {
+      store.dispatch({ type: actionTypes.increment });
+    });
+
+    dec.addEventListener("click", function () {
+      store.dispatch({ type: actionTypes.decrement });
+    });
+  </script>
+</html>
